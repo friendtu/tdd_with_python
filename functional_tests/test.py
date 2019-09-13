@@ -73,13 +73,29 @@ class NewVisitorTest(LiveServerTestCase):
         edith_list_url=self.browser.current_url
         self.assertRegex(edith_list_url,'/lists/.+')
 
+        ## We use a new browser session to make sure that no information
+        ## of Edith's is coming through from cookies etc
         self.browsr.quit()
         self.browser=webdriver.Firefox()
 
         self.browser.get(self.live_server_url)
         page_text=self.browser.find_element_by_tag_name('body').text
-        self.assertNotIn（Buy peacok feathers',page_text)
+        self.assertNotIn('Buy peacock feathers',page_text)
         self.assertNoIn('make a fly',page_text)
+        inputbox=self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys("Buy milk")
+        inputbox.send_key(Keys.ENTER)
+        self.wait_for_row_in_list_table("1: Buy milk")
+
+        francis_list_url=self.browser.current_url
+        self.assertRegex(self,'/lists/.+')
+        self.assertNotEqual(francis_list_url,edith_list_url)
+        self.browser.find_element_by_tag_name('body').text
+        self.assertnotin('Buy peacock feathers',page_text)
+        self.assertIn('Buy milk',page_text)
+
+
+
 
 
 #if __name__ == '__main__':

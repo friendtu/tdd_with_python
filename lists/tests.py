@@ -33,20 +33,24 @@ class HomePageTest (TestCase):
 
         self.assertEqual(response.status_code,302)
         #self.assertEqual(response['location'],'/')
-        self.assertEqual(response.url, '/')
+        self.assertEqual(response.url, '/lists/the_only_list')
 
     def test_only_saves_items_when_necessary(self):
         self.client.get('/')
         self.assertEqual(Item.objects.count(), 0)
 
+
+class ListViewTest(TestCase):
     def test_displays_all_list_items(self):
         Item.objects.create(text='itemey 1')
         Item.objects.create(text='itemey 2')
-        response=self.client.get('/')
-        self.assertIn('itemey 1',response.content.decode())
-        self.assertIn('itemey 2',response.content.decode())
+        response=self.client.get('/lists/the_only_list/')
+        #print("response: %".format(response))
+        self.assertContains(response, 'itemey 1')
+        self.assertContains(response, 'itemey 2')
 
-class  ItemModelTest(TestCase):
+
+class ItemModelTest(TestCase):
     def test_saving_and_retrieving_items(self):
         first_item=Item()
         first_item.text="The first (ever) list item"
