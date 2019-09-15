@@ -28,6 +28,12 @@ class ListViewTest(TestCase):
         response = self.client.get(f'/lists/{list_.id}/')
         self.assertTemplateUsed(response, 'list.html')
 
+    def test_passes_correct_list_to_template(self):
+        List.objects.create()
+        list_=List.objects.create()
+        response=self.client.get(f'/lists/{list_.id}/')
+        self.assertEqual(response.context['list'],list_)
+
     def test_displays_all_list_items(self):
         list_=List.objects.create()
         Item.objects.create(text='itemey 1', list=list_)
@@ -36,7 +42,6 @@ class ListViewTest(TestCase):
         Item.objects.create(text='other list item 1', list=other_list_)
         Item.objects.create(text='other list item 2', list=other_list_)
         response=self.client.get(f'/lists/{list_.id}/')
-        #print("response: %".format(response))
         self.assertContains(response, 'itemey 1')
         self.assertContains(response, 'itemey 2')
         self.assertNotContains(response, "other list item 1")
