@@ -1,6 +1,5 @@
 from selenium import webdriver
 import os
-
 import time
 from selenium.webdriver.common.keys import Keys
 #from django.test import LiveServerTestCase
@@ -34,6 +33,14 @@ class FunctionTest(StaticLiveServerTestCase):
                 time.sleep(0.5)
 
 
-#if __name__ == '__main__':
-#    unittest.main(warnings='ignore')
+    def wait_for(self,fn):
+        start_time=time.time()
+        while True:
+            try:
+                return fn()
+            except (AssertionError,WebDriverException)as e:
+                #StaleElementReferenceException
+                if time.time()-start_time>MAX_WAIT:
+                    raise e
+                time.sleep(0.5)
 
