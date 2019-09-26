@@ -40,4 +40,3 @@ class ListAndItemModelTest(TestCase):
             item.full_clean()
             item.save()
 
-
