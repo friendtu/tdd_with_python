@@ -70,11 +70,9 @@ class NewListTest(TestCase):
         expected_error = escape("You can't have an empty list item")
         #print(response.content.decode())
         self.assertContains(response, expected_error)
-
-    def test_invalid_list_arent_saved(self):
-        self.client.post('/list/new',data={'item_test':''})
         self.assertEqual(List.objects.count(),0)
-        self.assertEqual(Item.objects.count(),0)
+        self.assertEqual(List.objects.count(),0)
+
 
 
 class NewItemTest(TestCase):
