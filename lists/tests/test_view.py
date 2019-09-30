@@ -4,6 +4,7 @@ from lists.views import home_page
 from django.http import HttpRequest
 from lists.models import Item,List
 from django.utils.html import escape
+from lists.forms import ItemForm
 
 #from django.template.loader import  render_to_string
 
@@ -16,12 +17,8 @@ class HomePageTest (TestCase):
     def test_home_page_returns_correct_html(self):
         request = HttpRequest()
         response = self.client.get('/')
-        #html = response.content.decode('utf8').strip()
-        #self.assertTrue(html.startswith('<html>'))
-        #self.assertIn('<title>To-Do lists</title>',html)
-        #self.assertTrue(html.endswith('</html>'))
-
         self.assertTemplateUsed(response, 'home.html')
+        self.assertIsInstance(response.context['form'],ItemForm)
 
 class ListViewTest(TestCase):
     def test_users_list_template(self):
