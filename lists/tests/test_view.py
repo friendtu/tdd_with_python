@@ -92,13 +92,22 @@ class NewListTest(TestCase):
         response2=self.client.get(response['location'])
         self.assertEqual(response2.status_code,200)
 
-    def test_validatation_errors_are_sent_back_to_home_page_template(self):
+    def test_for_invalid_input_renders_home_template(self):
         response=self.client.post('/lists/new',data={'text':''})
         self.assertEqual(response.status_code,200)
         self.assertTemplateUsed(response,'home.html')
+
+    def test_validation_errors_are_shown_on_home_page(self):
+        response = self.client.post('/lists/new', data={'text': ''})
         expected_error = escape("You can't have an empty list item")
-        #print(response.content.decode())
         self.assertContains(response, expected_error)
+
+    def test_for_invalid_input_passes_form_to_template(self):
+        response = self.client.post('/lists/new', data={'text': ''})
+        self.assertIsInstance(response.context['form'],ItemForm)
+
+    def test_validation_errors_not_write_to_db(self):
+        response = self.client.post('/lists/new', data={'text': ''})
         self.assertEqual(List.objects.count(),0)
         self.assertEqual(List.objects.count(),0)
 
