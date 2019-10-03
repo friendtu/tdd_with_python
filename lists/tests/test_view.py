@@ -111,14 +111,15 @@ class NewListTest(TestCase):
         self.assertEqual(List.objects.count(),0)
         self.assertEqual(List.objects.count(),0)
 
-    #def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
-    #    list_ = List.objects.create()
-    #    item1 = Item.objects.create(list=list_,text="textey")
-    #    response = self.client.post(f'/lists/{list_.id}/', data={'text': "textey"})
-    #    expected_error=escape("You've already got this in your list")
-    #    self.assertContains(response, expected_error)
-    #    self.assertTemplateUsed(response,'list.html')
-    #    self.assertEqual(Item.objects.all().count(),1)
+    @skip
+    def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
+        list_ = List.objects.create()
+        Item.objects.create(list=list_,text="textey")
+        response = self.client.post(f'/lists/{list_.id}/', data={'text': "textey"})
+        expected_error=escape("You've already got this in your list")
+        self.assertContains(response, expected_error)
+        self.assertTemplateUsed(response,'list.html')
+        self.assertEqual(Item.objects.all().count(),1)
 
 
 
