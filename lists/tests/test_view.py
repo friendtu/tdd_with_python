@@ -4,7 +4,7 @@ from lists.views import home_page
 from django.http import HttpRequest
 from lists.models import Item,List
 from django.utils.html import escape
-from lists.forms import ItemForm,DUPLICATE_ITEM_ERROR,EMPTY_ITEM_ERROR
+from lists.forms import ItemForm,ExistingListItemForm,DUPLICATE_ITEM_ERROR,EMPTY_ITEM_ERROR
 from unittest import skip
 
 #from django.template.loader import  render_to_string
@@ -77,6 +77,12 @@ class ListViewTest(TestCase):
         self.assertTemplateUsed(response,'list.html')
         expected_error = escape("You can't have an empty list item")
         self.assertContains(response,expected_error)
+
+    def test_displays_item_from(self):
+        list_=List.objects.create()
+        response=self.client.get(f'/lists/{list_.id}/')
+        self.assertIsInstance(response.context['form'],ExistingListItemForm)
+        self.assertContains(response,'name="text"')
 
 class NewListTest(TestCase):
     def test_can_save_a_POST_request(self):

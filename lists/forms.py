@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 EMPTY_ITEM_ERROR = "You can't have an empty list item"
 DUPLICATE_ITEM_ERROR = "You've already got this in your list"
 
-class ItemForm(forms.models.ModelForm):
+class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
         fields = ('text',)
@@ -26,6 +26,10 @@ class ExistingListItemForm(ItemForm):
     def __init__(self,for_list,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.instance.list=for_list
+
+    def save(self):
+        #return super().save(self.instance.list)
+        return forms.ModelForm.save(self)
 
     def validate_unique(self):
         try:
