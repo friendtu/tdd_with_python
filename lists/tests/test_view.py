@@ -112,7 +112,6 @@ class NewListTest(TestCase):
         self.assertEqual(List.objects.count(),0)
         self.assertEqual(List.objects.count(),0)
 
-    @skip("not ready for testing")
     def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
         list_ = List.objects.create()
         Item.objects.create(list=list_,text="textey")
