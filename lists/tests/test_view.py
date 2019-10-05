@@ -4,7 +4,8 @@ from lists.views import home_page
 from django.http import HttpRequest
 from lists.models import Item,List
 from django.utils.html import escape
-from lists.forms import ItemForm
+from lists.forms import ItemForm,DUPLICATE_ITEM_ERROR,EMPTY_ITEM_ERROR
+from unittest import skip
 
 #from django.template.loader import  render_to_string
 
@@ -111,12 +112,12 @@ class NewListTest(TestCase):
         self.assertEqual(List.objects.count(),0)
         self.assertEqual(List.objects.count(),0)
 
-    @skip
+    @skip("not ready for testing")
     def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
         list_ = List.objects.create()
         Item.objects.create(list=list_,text="textey")
         response = self.client.post(f'/lists/{list_.id}/', data={'text': "textey"})
-        expected_error=escape("You've already got this in your list")
+        expected_error=escape(DUPLICATE_ITEM_ERROR)
         self.assertContains(response, expected_error)
         self.assertTemplateUsed(response,'list.html')
         self.assertEqual(Item.objects.all().count(),1)
