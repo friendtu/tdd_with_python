@@ -18,6 +18,9 @@ class FunctionTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def send_key_to_Item_input_box(self,keys):
+        return self.get_item_input_box().send_keys(keys)
+
     def get_item_input_box(self):
         return self.browser.find_element_by_id("id_text")
 
@@ -46,4 +49,7 @@ class FunctionTest(StaticLiveServerTestCase):
                 if time.time()-start_time>MAX_WAIT:
                     raise e
                 time.sleep(0.5)
+
+    def get_error_element(self):
+        return self.browser.find_element_by_css_selector('.has-error')
 
