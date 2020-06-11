@@ -20,6 +20,9 @@ pipeline {
             }
             success {
                 echo 'This will run only if successful'
+                mail to: 'friendtu@hotmail.com',
+                    subject: "Jenkins: ${currentBuild.fullDisplayName}",
+                    body: "It's all right!"
             }
             failure {
                 echo 'This will run only if failed'
