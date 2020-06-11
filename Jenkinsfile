@@ -8,7 +8,7 @@ pipeline {
         stage('build') {
             steps {
                 echo "Database engine is ${DB_ENGINE}"
-                echo 'DISABLE_AUTH is ${DISABLE_AUTH}'
+                echo "DISABLE_AUTH is ${DISABLE_AUTH}"
                 bat 'python --version'
             }
         }
