@@ -15,7 +15,7 @@ pipeline {
     }
     post {
             always {
-                archieveArtifacts artifacts:'requirements.txt',fingerprint: true
+                archiveArtifacts artifacts:'requirements.txt',fingerprint: true
                 echo 'This will always run'
             }
             success {
