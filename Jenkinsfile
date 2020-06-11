@@ -11,6 +11,13 @@ pipeline {
                 echo "DISABLE_AUTH is ${DISABLE_AUTH}"
                 bat 'python --version'
             }
+            steps {
+                timeout(time:3,unit:'MINUTES') {
+                    retry(5) {
+                        echo "do something with retry"
+                    }
+                }
+            }
         }
         stage('Sanity check') {
             steps {
